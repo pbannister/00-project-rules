@@ -77,6 +77,39 @@ A project has exactly three moves. Anything else is drift.
 sentence must exist once, in the shared file, so a version bump updates it in
 one place.
 
+## Adopting into an existing project
+
+A first adoption is not a copy. The project's existing rule files differ from the
+tagged version by however much they drifted, so the vendor refuses to overwrite
+them until a human has looked:
+
+1. `--dry-run` shows the delta. The vendor stops at the first file that differs
+   and was never vendored, on purpose: only a human can tell drift (safe to
+   replace) from a local customization (not safe).
+2. Review the diff. A version that is `additive` to the previous version can
+   still be `breaking` for the adopting project — that is the distinction the
+   impact classes exist to keep straight, and the upgrade record states the
+   project's impact, not the version's.
+3. `--force` adopts. Files that were never vendored are replaced.
+4. `sh scripts/rules-check.sh .` finds local files that restate shared text. Fix
+   each as a pointer to the authoritative file: the glossary states terms, the
+   contract states rules.
+5. Enable the vendored validator. It will find real, pre-existing
+   non-conformance: a project that never ran it is usually far from the
+   contract. That work is a separate conformance task, not part of the pin.
+
+Also: the vendored tests claim `tests/09-`, `10-`, and `13-`, so a project's own
+pin test takes the lowest free slot in the `00`–`09` band.
+
+**Known blocker.** The contract says a derived project may declare additional
+canonical root files or directories "in its project rules", and
+`tests/09-prompt-contract.sh` implements no such declaration: it tests every
+tracked root file against section 7 alone. A project carrying a `LICENSE`, a
+`pyproject.toml`, or its own `research/` cannot conform at all. The first
+canary attempt (`archive-innov-k6`) stopped here, after the pin itself succeeded.
+This has to be implemented before any project other than the skeleton adopts a
+version.
+
 ## Versioning
 
 `v<date>.<counter>`: `v2026-10-22.1`. `date` is `YYYY-MM-DD`; `counter` starts at

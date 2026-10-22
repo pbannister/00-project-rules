@@ -128,13 +128,20 @@ while read -r rel; do
 
     if [ "$content_differs" -eq 1 ]; then
         if [ -z "$previous" ]; then
-            die "refusing to overwrite $rel: it exists, is not vendored, and differs from v$version (move the local content aside, or pass --force)"
+            # A file that was never vendored is either the drift this tool exists
+            # to replace, or a local customization. Only a human knows which, so
+            # the first adoption is explicit: --force, after reviewing the diff.
+            if [ "$force" -eq 0 ]; then
+                die "refusing to overwrite $rel: it exists, is not vendored, and differs from v$version (review the diff, then pass --force to adopt)"
+            fi
+            echo "rules-vendor: adopting over an unvendored file: $rel" >&2
+        else
+            if [ "$(hash_file "$dest_file")" != "$previous" ] && [ "$force" -eq 0 ]; then
+                die "refusing to overwrite a local edit of a vendored file: $rel (record the change, then pass --force)"
+            fi
+            [ "$(hash_file "$dest_file")" = "$previous" ] \
+                || echo "rules-vendor: overwriting local edit: $rel" >&2
         fi
-        if [ "$(hash_file "$dest_file")" != "$previous" ] && [ "$force" -eq 0 ]; then
-            die "refusing to overwrite a local edit of a vendored file: $rel (record the change, then pass --force)"
-        fi
-        [ "$(hash_file "$dest_file")" = "$previous" ] \
-            || echo "rules-vendor: overwriting local edit: $rel" >&2
     fi
 
     # Classify by what changes on disk, not by lock membership. A file that is
