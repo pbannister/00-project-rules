@@ -10,6 +10,25 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.14] - 2026-10-22
+
+Impact: wording — one sentence in the conventions; no rule changes meaning.
+
+### Changed
+
+- `prompts/03-conventions.md` no longer tells a project to keep a fork of shared
+  text in sync with `scripts/skeleton-diff.sh`. That script is superseded by
+  `scripts/rules-check.sh`, which fails on an edited vendored file rather than
+  reporting drift after the fact. The advice now describes what the system
+  actually permits: extend in a local file, or record a deviation.
+
+### Removed
+
+- The last reference to `scripts/skeleton-diff.sh` from the shared set. The script
+  is a template artifact, and projects carrying it delete it themselves; leaving a
+  shared rule pointing at a script some projects no longer have is precisely the
+  dangling-instruction defect this library exists to prevent.
+
 ## [2026-10-22.13] - 2026-10-22
 
 Impact: additive — a project may now extend the test helpers; nothing else moves.
