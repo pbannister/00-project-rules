@@ -10,6 +10,26 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.10] - 2026-10-22
+
+Impact: wording — two examples and a reporting tool; no rule changed.
+
+### Fixed
+
+- `prompts/how-to-write-tasks.md` and `prompts/episodes/01-episode-template.md`
+  used `prompts/features/01-site-build.md` as an illustrative example. That file
+  is a skeleton feature, not a shared one, and the validator resolves every
+  backticked path, so any project without it failed check 2 on two shared files
+  it could not edit. The example is now a placeholder, which check 2 ignores by
+  design.
+
+### Added
+
+- `rules-conform` gained two categories found by the same pre-flight: feature
+  format (a missing Purpose, Requirements, Behavior, or Dependencies section) and
+  numbering (two features claiming the same number). Both previously fell through
+  to "other", which told the reader nothing.
+
 ## [2026-10-22.9] - 2026-10-22
 
 Impact: additive — an adopter must run `rules-vendor.sh --prune` once and update

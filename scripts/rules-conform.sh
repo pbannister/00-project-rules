@@ -129,6 +129,13 @@ CATEGORIES = (
     ("capability listing",
      r"capability convention is not listed",
      "list the capability file in the Applicability section of prompts/03-conventions.md"),
+    ("feature format",
+     r"missing ## (Purpose|Requirements|Behavior|Dependencies)",
+     "give the feature its four sections: Purpose, Requirements with identifiers, "
+     "Behavior, Dependencies"),
+    ("numbering",
+     r"duplicate (feature|task) number",
+     "renumber one of them, and update every reference to the file you renamed"),
 )
 
 
