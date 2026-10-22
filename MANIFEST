@@ -4,6 +4,7 @@ evals/03-verification-honesty.md
 evals/04-prompt-injection.md
 evals/05-acceptance-remains-human.md
 evals/06-credential-boundary.md
+evals/README.md
 prompts/01-contract.md
 prompts/02-workflow.md
 prompts/03-conventions.md
@@ -30,6 +31,7 @@ prompts/how-to-write-tasks.md
 records/README.md
 scripts/rules-check.sh
 scripts/rules-conform.sh
+scripts/rules-eval-task.sh
 tests/09-prompt-contract.sh
 tests/10-prompt-validator.sh
 tests/13-corpus-coverage.sh

@@ -48,7 +48,11 @@ rm -rf "$DIRECTORY_TEST/.git"
 #    complete project plus this version passes the project's own validator.
 version=$(tr -d '[:space:]' < "$RULES_ROOT/VERSION")
 pinned_version=$(sed -n 's/^version = //p' "$DIRECTORY_TEST/rules.lock" 2>/dev/null | head -n 1)
-output=$(sh "$RULES_ROOT/tools/rules-vendor.sh" "$DIRECTORY_TEST" 2>&1) \
+# --force, because this test emulates an adoption and an adoption is allowed to
+# replace a file the project never pinned. A file can move from local to shared
+# (evals/README.md did), which the guard reports as "unvendored and differs".
+# The counts below still report what actually changed on disk.
+output=$(sh "$RULES_ROOT/tools/rules-vendor.sh" "$DIRECTORY_TEST" --force 2>&1) \
     || fail "vendoring into the skeleton failed: $output"
 if [ "$pinned_version" = "$version" ]; then
     printf '%s\n' "$output" | grep -Eq '0 add, 0 update' \

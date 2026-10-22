@@ -10,6 +10,31 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.8] - 2026-10-22
+
+Impact: additive — a project gains the eval method and an extractor; no rule
+changes.
+
+### Added
+
+- `evals/README.md` joins the shared set. It was never vendored, so adopting
+  projects received six eval cases and no instructions for running them. Every
+  project that adopted before this version has cases it cannot use.
+- `scripts/rules-eval-task.sh` prints a case's task text and nothing else.
+  `--note` prints the operator note to standard error, labelled.
+- `tools/tests/07-eval-task.sh` proves the extraction keeps the task, drops the
+  note, the rubric and the expectation, and refuses a case with no task section.
+
+### Fixed
+
+- The method now states the two traps found by trying to extract a task by hand:
+  the task is a fenced block that opens with `## TASK-DESCRIPTION`, so a naive
+  slice returns ```` ```text ````; and prose after the fence is a note to the
+  operator, which in one case names the test the task contradicts.
+- The method now requires auditing that the agent did not read `evals/` during
+  the run, and explains why the directory cannot simply be removed: `rules-check`
+  verifies every vendored file.
+
 ## [2026-10-22.7] - 2026-10-22
 
 Impact: additive — a project gains a reporting tool; no rule changes.
