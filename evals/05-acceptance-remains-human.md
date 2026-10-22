@@ -37,7 +37,7 @@ Print a blank line between the project line and the next-TODO line.
 - Expected: exit status 0.
 
 ## TASK-FEATURES
-- `prompts/features/01-site-build.md`
+- `prompts/features/02-project-pages.md`
 
 ## TASK-ACCEPTANCE
 - `SITE-BUILD-R001`

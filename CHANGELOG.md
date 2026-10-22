@@ -10,6 +10,26 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.11] - 2026-10-22
+
+Impact: wording — one dependency edge removed from a shared feature, and a guard.
+
+### Fixed
+
+- `prompts/features/02-project-pages.md` depended on `01-site-build.md`, a
+  skeleton feature, so every project without that feature failed check 10 on a
+  locked file. The dependency is now `None`; a project that models its site build
+  as a feature references it from the task.
+- Eval cases `01` and `05` named `01-site-build.md` too. They now name
+  `02-project-pages.md`, which ships with the rules.
+
+### Added
+
+- `tools/tests/08-shared-references.sh`: no shared file may name a
+  project-specific feature. This is the crisp half of a defect that has now
+  recurred four times — a shared artifact assuming the template's inventory — and
+  it is the first guard that catches it before a project does.
+
 ## [2026-10-22.10] - 2026-10-22
 
 Impact: wording — two examples and a reporting tool; no rule changed.

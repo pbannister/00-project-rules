@@ -29,7 +29,7 @@ Add a `--strict` flag that exits nonzero when a generated page is missing.
 | modify | `scripts/site-verify.sh` |
 
 ## TASK-FEATURES
-- `prompts/features/01-site-build.md`
+- `prompts/features/02-project-pages.md`
 
 ## TASK-ACCEPTANCE
 - `SITE-BUILD-R001`
