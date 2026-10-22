@@ -10,6 +10,30 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.12] - 2026-10-22
+
+Impact: additive — the adversarial corpus now runs in projects that do not carry
+the skeleton's local corpus.
+
+### Fixed
+
+- `tests/10-prompt-validator.sh` mutated `prompts/features/01-site-build.md` and
+  `prompts/tasks/01-site-build-implement.md`, which are skeleton files: a project
+  without them failed all 54 cases with `sed: can't read`, for a reason unrelated
+  to the checks. The corpus now synthesizes its own fixture every time, under
+  reserved numbers (`89-`) and reserved identifiers (`FIXTURE-R`), so it neither
+  collides with a project's corpus nor drifts with it.
+- Two cases that relied on `02-project-pages.md` depending on a skeleton feature
+  now add that dependency to the fixture copy themselves, which is where a
+  mutation belongs.
+
+### Note
+
+This is the fifth instance of one defect, and the guard added in `2026-10-22.11`
+did not catch it: `tests/` was exempted because its fixture paths look like
+references. The exemption was right for generated fixtures and wrong for a test
+that hardcodes a project file. The corpus now has no such paths.
+
 ## [2026-10-22.11] - 2026-10-22
 
 Impact: wording — one dependency edge removed from a shared feature, and a guard.
