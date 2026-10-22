@@ -10,6 +10,21 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.15] - 2026-10-22
+
+Impact: additive — the adversarial corpus works in a repository that has never
+been committed.
+
+### Fixed
+
+- `tests/10-prompt-validator.sh` builds its fixture from `git ls-files`, so a
+  repository with an empty index produced an empty fixture and failed all 54
+  cases with messages about the rules — a contract section not found, AGENTS.md
+  missing — when the repository was the thing that had no commits. It now falls
+  back to the working tree when the index is empty. A project in that state cannot
+  pin a version, and its pin test says so; the corpus should not misdiagnose it as
+  a rules failure.
+
 ## [2026-10-22.14] - 2026-10-22
 
 Impact: wording — one sentence in the conventions; no rule changes meaning.
