@@ -63,23 +63,36 @@ esac
 printf '%s\n' "$version" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}\.[1-9][0-9]*$' \
     || fail "VERSION is not <date>.<counter> (YYYY-MM-DD.N): $version"
 date_part=${version%.*}
+today=$(date -u +%Y-%m-%d)
 
 cd "$RULES_ROOT"
 
 command -v git >/dev/null 2>&1 || fail 'git is not available'
 [ -d .git ] || fail 'not a git repository'
 
-# The counter is per date, so the next version on this date is one past the
-# highest tag already cut for it.
-next_counter() {
-    highest=$(git tag -l "v$date_part.*" | sed 's/.*\.//' | grep -E '^[0-9]+$' | sort -n | tail -n 1)
+# The counter is per date, so the next version on a date is one past the highest
+# tag already cut for it.
+counter_after() {
+    highest=$(git tag -l "v$1.*" | sed 's/.*\.//' | grep -E '^[0-9]+$' | sort -n | tail -n 1)
     echo $(( ${highest:-0} + 1 ))
 }
+next_counter() {
+    counter_after "$date_part"
+}
 
+# The date in a version is the day the release is cut, so --next reports today,
+# not the date of the last release. Without this, the morning after a release
+# would suggest another tag on the old date, which is the habit the house rules
+# exist to prevent.
 if [ "$show_next" -eq 1 ]; then
-    echo "$date_part.$(next_counter)"
+    echo "$today.$(counter_after "$today")"
     exit 0
 fi
+
+# 0. A release is dated the day it is cut. A version carrying another date makes
+#    the tag say something untrue about when the rules changed.
+[ "$date_part" = "$today" ] \
+    || fail "VERSION is dated $date_part; a release is dated the day it is cut ($today). Set VERSION to $today.$(counter_after "$today")."
 
 # 1. Branchless: exactly one branch exists and HEAD is on it. A tag made from a
 #    side branch or a detached checkout is a release nobody can reproduce.
