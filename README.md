@@ -97,6 +97,12 @@ them until a human has looked:
 5. Enable the vendored validator. It will find real, pre-existing
    non-conformance: a project that never ran it is usually far from the
    contract. That work is a separate conformance task, not part of the pin.
+6. `scripts/rules-conform.sh` is the tool for that work. It runs the validator
+   and groups the findings by the action that fixes them, then names the files
+   each action touches — so "twelve tasks need the same four sections" appears
+   as one item, not sixty. `--verbose` lists every finding. It reports and never
+   repairs: a tool that rewrote requirement identifiers would be inventing the
+   requirements it claims to check.
 
 Also: the vendored tests claim `tests/09-`, `10-`, and `13-`, so a project's own
 pin test takes the lowest free slot in the `00`–`09` band.

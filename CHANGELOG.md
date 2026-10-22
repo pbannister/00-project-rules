@@ -10,6 +10,19 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.7] - 2026-10-22
+
+Impact: additive — a project gains a reporting tool; no rule changes.
+
+### Added
+
+- `scripts/rules-conform.sh` runs the validator and groups its findings by the
+  action that fixes them, naming the files each action touches, with `--verbose`
+  for every finding. Read-only: it reports, it never repairs.
+- `tools/tests/06-conform.sh` proves a clean project is quiet, three failures in
+  three places collapse to three actions, verbose mode keeps the evidence, the
+  reporter modifies no file, and a project without the validator exits 2.
+
 ## [2026-10-22.6] - 2026-10-22
 
 Impact: wording — no instruction an agent follows changed.

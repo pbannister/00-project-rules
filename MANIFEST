@@ -7,6 +7,7 @@ evals/06-credential-boundary.md
 prompts/01-contract.md
 prompts/02-workflow.md
 prompts/03-conventions.md
+prompts/README.md
 prompts/capabilities/01-generated-documentation.md
 prompts/capabilities/02-version-information.md
 prompts/capabilities/03-generated-data-products.md
@@ -26,11 +27,11 @@ prompts/how-to-write-episodes.md
 prompts/how-to-write-features.md
 prompts/how-to-write-research.md
 prompts/how-to-write-tasks.md
-prompts/README.md
 records/README.md
 scripts/rules-check.sh
+scripts/rules-conform.sh
 tests/09-prompt-contract.sh
 tests/10-prompt-validator.sh
 tests/13-corpus-coverage.sh
-tests/lib/test_helpers.sh
 tests/README.md
+tests/lib/test_helpers.sh
