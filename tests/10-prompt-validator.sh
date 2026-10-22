@@ -36,11 +36,18 @@ fail() {
 
 # reset: a clean, committed copy of the repository to mutate. Committing it
 # lets the validator's tracked-root and tool-config checks run.
+#
+# The copy is built from `git ls-files`, not from the working tree, because the
+# validator only ever reads tracked files and a working tree can be enormous:
+# one project carries 3.9 GB of ignored research evidence, and copying it once
+# per case (54 times) made a ten-minute suite out of a half-megabyte fixture.
+# `--ignore-failed-read` covers a path that is tracked but absent locally, which
+# must not abort the fixture build.
 reset() {
     rm -rf "$DIRECTORY_ROOT"
     mkdir -p "$DIRECTORY_ROOT"
-    (cd "$REPOSITORY_ROOT" && tar --exclude=./.git --exclude=./site.out \
-        --exclude=./dataflow.out --exclude=./logs -cf - .) \
+    (cd "$REPOSITORY_ROOT" && git ls-files -z \
+        | tar --null -T - --ignore-failed-read -cf -) \
         | (cd "$DIRECTORY_ROOT" && tar -xf -)
     git -C "$DIRECTORY_ROOT" init -q
     git -C "$DIRECTORY_ROOT" add -A

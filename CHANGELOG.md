@@ -10,6 +10,18 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.6] - 2026-10-22
+
+Impact: wording — no instruction an agent follows changed.
+
+### Fixed
+
+- `tests/10-prompt-validator.sh` builds each fixture from `git ls-files` instead
+  of copying the working tree. The validator reads only tracked files, so
+  untracked bytes were pure cost: on a project with 3.9 GB of ignored research
+  evidence, 54 cases copied about 210 GB per run. The suite went from ~10 minutes
+  to 6.4 seconds, with the same 54 rejections and 6 acceptances.
+
 ## [2026-10-22.5] - 2026-10-22
 
 Impact: wording — no instruction an agent follows changed.
