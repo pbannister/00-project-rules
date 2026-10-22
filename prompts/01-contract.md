@@ -130,6 +130,7 @@ Tool-specific root-level files and directories are permitted when a file under `
 - Committed tool configuration uses workspace-relative paths; never an absolute home path. An absolute home path is both a leak and a portability bug.
 - `tests/00-skeleton.sh` is the machine-readable list of canonical root files and directories; keep this section and that test in agreement.
 - A derived project may declare additional canonical or tool-specific root files or directories in its project rules; the declaration makes them part of the project structure.
+- The declaration is made in a local rule file numbered after the shared ones, in a `## Project Structure` section listing one backticked path per line. A directory is written with a trailing slash. The declaration satisfies both the root-file and the top-level-directory checks; it cannot override a protected path.
 - A root-level file may change only when the task authorizes the operation or a workflow step requires it.
 
 All new files must be placed in the correct directory:

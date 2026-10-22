@@ -10,6 +10,28 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.4] - 2026-10-22
+
+Impact: additive — a project may now declare its own root files; a project that
+declares nothing behaves exactly as before.
+
+The canary stopped here: the contract promised projects could declare extra root
+files, and the validator implemented no such declaration, so any project with a
+`LICENSE`, a `pyproject.toml`, or its own `research/` failed the structure checks
+outright. `LICENSE` alone blocked essentially every real project.
+
+### Added
+
+- `tests/09-prompt-contract.sh` reads `## Project Structure` from local rule
+  files numbered after the shared ones (`prompts/1x-…`), and treats each
+  backticked path as permitted by checks 9 and 14. Shared files are never read,
+  so a declaration cannot be smuggled into a vendored file.
+- `prompts/01-contract.md` section 7 states where the declaration goes and its
+  shape.
+- `tools/tests/05-declaration.sh` asserts both halves: undeclared files and
+  directories are still refused, declared ones are accepted, and a renamed
+  heading is not a declaration.
+
 ## [2026-10-22.3] - 2026-10-22
 
 Impact: additive — a new permitted root file, and no rule reverses.

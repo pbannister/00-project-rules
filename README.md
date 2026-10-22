@@ -101,14 +101,25 @@ them until a human has looked:
 Also: the vendored tests claim `tests/09-`, `10-`, and `13-`, so a project's own
 pin test takes the lowest free slot in the `00`–`09` band.
 
-**Known blocker.** The contract says a derived project may declare additional
-canonical root files or directories "in its project rules", and
-`tests/09-prompt-contract.sh` implements no such declaration: it tests every
-tracked root file against section 7 alone. A project carrying a `LICENSE`, a
-`pyproject.toml`, or its own `research/` cannot conform at all. The first
-canary attempt (`archive-innov-k6`) stopped here, after the pin itself succeeded.
-This has to be implemented before any project other than the skeleton adopts a
-version.
+**Declaring what a project has.** A real project carries files the shared list
+cannot know about — a licence, a dependency manifest, its own research tree. It
+declares them in a local rule file numbered after the shared ones, in a
+`## Project Structure` section, one backticked path per line:
+
+```markdown
+## Project Structure
+
+- `LICENSE` — the licence this project ships under.
+- `pyproject.toml` — the dependency manifest.
+- `research/` — background notes; a directory takes a trailing slash.
+```
+
+The validator reads only local rule files, never a vendored one, so a declaration
+cannot be smuggled into a shared file. `tools/tests/05-declaration.sh` asserts
+both halves: undeclared is still refused, declared is accepted. This is what the
+contract already promised; until `2026-10-22.4` the validator implemented no such
+thing, and a project carrying a `LICENSE` could not conform at all — which is
+where the first canary attempt stopped.
 
 ## Versioning
 
