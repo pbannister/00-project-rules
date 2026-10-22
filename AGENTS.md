@@ -32,9 +32,17 @@ hold a project's local layer (glossary, feature and task indexes, `README.md`,
   tagged cannot be adopted.
 - **A version is `<date>.<counter>`.** `VERSION` holds `2026-10-22.1`; the tag
   adds the `v`, and the counter is one past the highest tag for that date.
-  `make next` prints the next free one. The string says *when*, not *how much*,
-  so the impact is declared, never inferred: each release record carries
-  `Impact: initial|breaking|additive|wording` and `make release` requires it.
+  `make next` prints the next free one.
+- **A tag here is deliberately not a project's tag.** A project releases an
+  artifact with `v<date>-<branch>`; this repository has no branches, so its tags
+  carry none. Do not unify the two shapes.
+- **Branchless, one release a day.** One branch, and a release is made on it.
+  The gate refuses a second branch, a detached HEAD, and a second tag on the same
+  date unless `--same-day` is passed (initial build-out and corrections only).
+- **Impact is stated, never inferred.** The version says *when*, not *how much*,
+  so each release record carries `Impact: initial|breaking|additive|wording|
+  internal`, and `internal` is proved by diffing `MANIFEST` against the previous
+  tag.
 
 ## Commands
 

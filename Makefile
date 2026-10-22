@@ -14,7 +14,7 @@
 #	in a task, against one named project, and it is recorded.
 #	  sh tools/rules-vendor.sh <project> [--dry-run] [--force]
 
-.PHONY: all test release dry-run next manifest
+.PHONY: all test release release-same-day dry-run next manifest
 
 all: test
 
@@ -33,3 +33,7 @@ manifest:
 
 release:
 	sh tools/rules-release.sh
+
+# The exception, not the habit: initial build-out and corrections only.
+release-same-day:
+	sh tools/rules-release.sh --same-day

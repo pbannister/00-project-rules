@@ -79,21 +79,44 @@ one place.
 
 ## Versioning
 
-`v<date>.<counter>` — the same shape the projects use for a release, with a dot
-before the counter: `v2026-10-22.1`, then `v2026-10-22.2` for a second release
-on the same day. `date` is `YYYY-MM-DD`; `counter` starts at 1 each day and is
-one past the highest tag already cut for that date. `VERSION` holds the version
-without the leading `v`, and `make next` prints the next free one.
+`v<date>.<counter>`: `v2026-10-22.1`. `date` is `YYYY-MM-DD`; `counter` starts at
+1 each day and is one past the highest tag already cut for that date. `VERSION`
+holds the version without the leading `v`, and `make next` prints the next free
+one.
 
-A date and a counter say *when*, not *how much*, so the version string carries
-no compatibility signal. That signal is mandatory elsewhere and is not inferred:
+This tag shape is **deliberately unlike a project's**. A project's release tag is
+`v<date>-<branch>` (`prompts/capabilities/04-release-and-publishing.md`), because
+a project releases an artifact *from a branch*. This repository has no branches
+and never releases from one, so a branch cannot appear in its tags. The dot
+before the counter is the visible difference, and it is what tells you at a
+glance which kind of tag you are looking at — a library version or an artifact
+release. Do not unify them.
 
-- Every release record declares `Impact: initial | breaking | additive |
-  wording` on its own line, and `make release` refuses to tag without it.
-- **breaking** — a rule reverses, or the scope of what a task authorizes
-  changes. A project re-runs the affected evals before adopting it.
-- **additive** — a new rule, capability, flavor, or eval case.
-- **wording** — changes no behavior; a project may adopt it without an eval run.
+### House rules
+
+- **Branchless.** Exactly one branch exists, and a release is made on it. The
+  gate refuses a second branch and refuses a detached HEAD, so there is nowhere
+  for a feature branch to appear. Nothing in a tag, a commit, or a release record
+  names a branch.
+- **One release a day.** The counter is an escape hatch, not a cadence. The gate
+  refuses a second tag on the same date unless `--same-day` is passed, which
+  exists for the initial build-out and for a correction that cannot wait. Routine
+  changes wait for the next day rather than spend a counter.
+- **Stated impact.** The version says *when*, not *how much*, so the impact is
+  declared and checked, never inferred. Every release record carries one of:
+
+  | `Impact:` | Meaning for a consuming project |
+  |---|---|
+  | `initial` | the first release; nothing to differ from |
+  | `breaking` | a rule reverses or authorization changes — re-run the affected evals before adopting |
+  | `additive` | a new rule, capability, flavor, or eval case |
+  | `wording` | changes no behavior; adopt without an eval run |
+  | `internal` | no shared file changed at all |
+
+  `internal` is checked rather than believed: the gate diffs `MANIFEST` against
+  the previous tag and refuses the claim if any shared file moved. That stops a
+  real rule change from being labelled as housekeeping and skipping eval
+  scrutiny.
 
 Every change that is not wording names, in `CHANGELOG.md`, the test or eval that
 covers it. `make release` refuses to tag without a `releases/v<version>.md`
