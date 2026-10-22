@@ -83,11 +83,13 @@ fi
 
 # 1. Branchless: exactly one branch exists and HEAD is on it. A tag made from a
 #    side branch or a detached checkout is a release nobody can reproduce.
+#    Detachment is reported first: a clone of a tag has no branch at all, and
+#    "found 0 branches" would name the symptom rather than the cause.
+branch=$(git symbolic-ref --short -q HEAD) \
+    || fail 'HEAD is detached; a release must be made on the one branch'
 branch_count=$(git for-each-ref --format='%(refname:short)' refs/heads | wc -l | tr -d ' ')
 [ "$branch_count" -eq 1 ] \
     || fail "this repository is branchless: exactly one branch may exist, found $branch_count (this is not where feature branches belong)"
-branch=$(git symbolic-ref --short -q HEAD) \
-    || fail 'HEAD is detached; a release must be made on the one branch'
 [ "$branch" = "$(git for-each-ref --format='%(refname:short)' refs/heads | head -n 1)" ] \
     || fail "HEAD is on '$branch', which is not the repository's single branch"
 
