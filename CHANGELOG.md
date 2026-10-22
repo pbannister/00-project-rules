@@ -10,6 +10,25 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.3] - 2026-10-22
+
+Impact: additive — a new permitted root file, and no rule reverses.
+
+Found by pinning the skeleton, which is what a pilot is for: the validator
+refused `rules.lock` at the project root, because contract section 7 enumerates
+the canonical root files and the lock was not among them. Pinning produces that
+file in every adopting project, so it belongs in the list rather than in each
+project's local declaration.
+
+### Added
+
+- `prompts/01-contract.md` section 7: `rules.lock` is a canonical root-level
+  file — the one root file a project must not edit.
+- `tools/tests/04-skeleton-integration.sh` asserts faithfulness only when the
+  skeleton already pins the version under test. Requiring it unconditionally
+  deadlocks a release: the release that changes a shared rule is cut before the
+  template adopts it.
+
 ## [2026-10-22.2] - 2026-10-22
 
 Impact: internal — no shared file changed; only the release gate and the

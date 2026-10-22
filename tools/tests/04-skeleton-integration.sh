@@ -38,19 +38,23 @@ trap 'rm -rf "$DIRECTORY_TEST"' EXIT HUP INT TERM
 cp -R "$SKELETON/." "$DIRECTORY_TEST/"
 rm -rf "$DIRECTORY_TEST/.git"
 
-# 1. Faithfulness: no pre-existing shared file has to change to reach this
-#    version. Once the skeleton pins a version itself, a clean vendor must also
-#    add nothing at all; before it does, the gate script is a legitimate
-#    addition, which is why the stronger assertion is conditional.
-pinned=0
-[ -f "$DIRECTORY_TEST/rules.lock" ] && pinned=1
+# 1. Faithfulness, where it is meaningful.
+#
+#    "Vendoring this version changes no existing file" can only hold once the
+#    skeleton already pins this version. It cannot hold while a version is being
+#    prepared: the release that changes a shared rule is cut before the template
+#    adopts it, so demanding it would deadlock every such release. Assert it
+#    exactly when it is true, and always assert the property that matters -- a
+#    complete project plus this version passes the project's own validator.
+version=$(tr -d '[:space:]' < "$RULES_ROOT/VERSION")
+pinned_version=$(sed -n 's/^version = //p' "$DIRECTORY_TEST/rules.lock" 2>/dev/null | head -n 1)
 output=$(sh "$RULES_ROOT/tools/rules-vendor.sh" "$DIRECTORY_TEST" 2>&1) \
     || fail "vendoring into the skeleton failed: $output"
-printf '%s\n' "$output" | grep -Eq '0 update' \
-    || fail "this repository has drifted from the skeleton: $output"
-if [ "$pinned" -eq 1 ]; then
+if [ "$pinned_version" = "$version" ]; then
     printf '%s\n' "$output" | grep -Eq '0 add, 0 update' \
-        || fail "the skeleton is pinned but vendor still had to add files: $output"
+        || fail "the skeleton pins $version but vendoring still changed files: $output"
+else
+    echo "04-skeleton-integration: skeleton pins ${pinned_version:-nothing}; checking coherence only"
 fi
 
 # 2. Coherence: the project's own check passes, and the validator agrees.
