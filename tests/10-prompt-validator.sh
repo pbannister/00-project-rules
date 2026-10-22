@@ -213,15 +213,24 @@ reset; sed -i '/^## EPISODE-ACCEPTANCE$/,/^## EPISODE-RISKS$/{/^- /d}' "$FILE_EP
 expect_reject 6.1 'episode acceptance without criteria' 'EPISODE-ACCEPTANCE has no criteria'
 
 # --- check 9: root structure and portable tool configuration ---
+#
+# A fixture must be tracked for the structure checks to see it. `git add -f` is
+# deliberate: a project may ignore these very names for good reasons -- one
+# project ignores `config.json` because it holds a device password -- and an
+# ignored fixture would make the case pass for the wrong reason, silently. The
+# force applies to the fixture only, never to the project's whole tree.
 reset; printf '%s\n' 'x' > "$DIRECTORY_ROOT/NOTES.md"
+git -C "$DIRECTORY_ROOT" add -f NOTES.md
 expect_reject 9 'stray root file' 'root file is not permitted'
 
 reset; mkdir -p "$DIRECTORY_ROOT/.undocumented"
 printf '%s\n' 'x' > "$DIRECTORY_ROOT/.undocumented/config.json"
+git -C "$DIRECTORY_ROOT" add -f .undocumented/config.json
 expect_reject 9 'undeclared tool directory' 'tool directory is not permitted'
 
 reset; mkdir -p "$DIRECTORY_ROOT/.vscode"
 printf '%s\n' '{ "path": "/home/someone/sources" }' > "$DIRECTORY_ROOT/.vscode/settings.json"
+git -C "$DIRECTORY_ROOT" add -f .vscode/settings.json
 expect_reject 9 'absolute home path in tool configuration' 'absolute home path'
 
 # --- checks 9.1, 9.2, 11: the agent entry point and unattended scripts ---

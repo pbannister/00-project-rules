@@ -10,6 +10,17 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.5] - 2026-10-22
+
+Impact: wording — no instruction an agent follows changed.
+
+### Fixed
+
+- `tests/10-prompt-validator.sh` force-adds the fixture it creates in three
+  cases. A project may ignore any of those names — the canary ignores
+  `config.json` because it holds a device password — and an ignored fixture made
+  a rejection case pass silently, which is a test failing green.
+
 ## [2026-10-22.4] - 2026-10-22
 
 Impact: additive — a project may now declare its own root files; a project that
