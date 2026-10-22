@@ -10,6 +10,23 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.13] - 2026-10-22
+
+Impact: additive — a project may now extend the test helpers; nothing else moves.
+
+### Fixed
+
+- `tests/lib/test_helpers.sh` is vendored, so a project that had extended it lost
+  its additions the moment it adopted: `gnome-appimage-integration` carried a
+  79-line helper, the vendor replaced it with the 35-line shared one, and nineteen
+  tests failed at once. The shared helper now sources an optional, project-owned
+  `tests/lib/project_helpers.sh`, so extensions survive every upgrade.
+
+### Added
+
+- `tests/README.md` documents the extension point and the four shared functions,
+  including `skip_unless_tool`, which the vendored tests rely on.
+
 ## [2026-10-22.12] - 2026-10-22
 
 Impact: additive — the adversarial corpus now runs in projects that do not carry
