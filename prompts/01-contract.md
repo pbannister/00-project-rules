@@ -9,7 +9,7 @@ Five concepts run through the project: **requirements** determine what must be t
 Instruction precedence, from highest to lowest, is:
 
 1. System and platform instructions.
-2. Non-overridable safety and privacy constraints (section 8; `prompts/common/02-universal-rules.md` Privacy-Boundary Rules).
+2. Non-overridable safety and privacy constraints (section 8; `prompts/common/01-universal-rules.md` Privacy-Boundary Rules).
 3. Explicit human instructions in the current task.
 4. This contract.
 5. The workflow.
@@ -35,7 +35,7 @@ This table records authority and precedence. What each file defines is described
 | `prompts/01-contract.md` | contract | always |
 | `prompts/02-workflow.md` | workflow | always |
 | `prompts/features/*.md` | feature requirements | only when referenced by the task or by a feature dependency, transitively |
-| `prompts/common/02-universal-rules.md` | global requirements | always |
+| `prompts/common/01-universal-rules.md` | global requirements | always |
 | `prompts/03-conventions.md` | conventions | always |
 | `prompts/flavors/01-semantic-sort-naming.md` | conventions | always |
 | `prompts/flavors/02-cpp-conventions.md` | conventions | only when the task targets C++ |
@@ -71,8 +71,8 @@ Every task must follow `prompts/02-workflow.md`.
 - Workflow-authorized modifications are limited to the operations `prompts/02-workflow.md` names as required: the tests the test policy requires (section 4), the `TODO.md` status update, the status line of a referenced record, and the outcome-record commit (section 7.1).
 - Workflow authorization permits nothing unrelated.
 - A command may be executed only when the task requests it, or when the workflow requires it for verification or repository status.
-- The anti-hallucination rules are in `prompts/common/02-universal-rules.md` (Anti-Hallucination Rules).
-- The clarification rules are in `prompts/common/02-universal-rules.md` (Clarification Rules).
+- The anti-hallucination rules are in `prompts/common/01-universal-rules.md` (Anti-Hallucination Rules).
+- The clarification rules are in `prompts/common/01-universal-rules.md` (Clarification Rules).
 
 ## 4. Response Phases
 

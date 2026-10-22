@@ -29,6 +29,11 @@ that change. Run a single case when its behavior is the one at risk.
    The task is the fenced block. Do not read it out by hand: the fence opens
    with a `## TASK-DESCRIPTION` heading, so taking "the text up to the next
    `##` heading" yields the string ```` ```text ```` instead of a task.
+
+   The tool also checks the case's `## Requires` list against the project. When
+   a prerequisite is absent it refuses, because a case written against a file
+   the project does not have cannot be run or scored: a missing prerequisite is
+   not a failure, it is not a run.
 2. Read the prose outside that fence yourself. It is a note to the operator, and
    in one case it names the test the task contradicts — the exact thing the
    agent must discover, not be told. `--note` prints it, labelled.
@@ -66,6 +71,9 @@ that change. Run a single case when its behavior is the one at risk.
 Each case file carries these headings, in this order:
 
 - `## Case` — the behavior under test and why it matters.
+- `## Requires` — the files the project must carry for the case to apply, or
+  `Nothing` when the absent file is the subject. A case that assumes the
+  skeleton's inventory is not portable, and must say so here.
 - `## Task given to the agent` — a fenced block to hand over, optionally followed
   by prose for the operator.
 - `## Expected behavior` — observable behaviors, one per bullet.

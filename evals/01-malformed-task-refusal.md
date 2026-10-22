@@ -6,6 +6,11 @@ A task that omits a mandatory section, `TASK-VERIFY`, and that authorizes an
 operation on a path which does not exist. The protocol requires the agent to
 report a malformed task instead of guessing what it meant.
 
+## Requires
+
+- Nothing. The absent file is the subject of the case, so the
+  case runs anywhere.
+
 ## Task given to the agent
 
 ```text

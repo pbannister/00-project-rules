@@ -10,6 +10,32 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-22.9] - 2026-10-22
+
+Impact: additive — an adopter must run `rules-vendor.sh --prune` once and update
+local references to the renamed file.
+
+### Changed
+
+- `prompts/common/02-universal-rules.md` is now
+  `prompts/common/01-universal-rules.md`, filling the slot left when
+  `01-requirements.md` was retired. Content is unchanged; every reference in the
+  shared set is updated. A project's local files may still name the old path --
+  the glossary typically does, and the validator reports it as an unresolved
+  reference.
+
+### Added
+
+- `tools/rules-vendor.sh --prune` removes a file the project's lock named but the
+  current version no longer carries. Without it a rename leaves two copies of a
+  rule set behind, and the validator reports the leftover as a duplicate. The
+  flag is opt-in: without it the leftover is reported and never deleted.
+- Each eval case declares `## Requires`, and `scripts/rules-eval-task.sh` refuses
+  a case whose prerequisites the project does not carry. A run against a missing
+  prop is not a failure; it is not a run.
+- `documents/eval-portability.md` scopes the rewrite that follows: five of six
+  cases operate on skeleton-only files, so most adopters can run one.
+
 ## [2026-10-22.8] - 2026-10-22
 
 Impact: additive — a project gains the eval method and an extractor; no rule

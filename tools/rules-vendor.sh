@@ -31,7 +31,7 @@ DIRECTORY_SCRIPT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 RULES_ROOT=$(CDPATH= cd -- "$DIRECTORY_SCRIPT/.." && pwd)
 
 usage() {
-    echo 'usage: rules-vendor.sh PROJECT_DIR [--version V] [--dry-run] [--force]' >&2
+    echo 'usage: rules-vendor.sh PROJECT_DIR [--version V] [--dry-run] [--force] [--prune]' >&2
     exit 2
 }
 
@@ -44,6 +44,7 @@ project_arg=""
 version_arg=""
 dry_run=0
 force=0
+prune=0
 while [ $# -gt 0 ]; do
     case "$1" in
         --version)
@@ -53,6 +54,7 @@ while [ $# -gt 0 ]; do
             ;;
         --dry-run) dry_run=1 ;;
         --force) force=1 ;;
+        --prune) prune=1 ;;
         -h|--help) usage ;;
         -*) usage ;;
         *)
@@ -173,13 +175,24 @@ awk '{print $1}' "$DIRECTORY_TEMP/old" | sort > "$DIRECTORY_TEMP/old.paths"
 awk '{print $2}' "$DIRECTORY_TEMP/new" | sort > "$DIRECTORY_TEMP/new.paths"
 comm -23 "$DIRECTORY_TEMP/old.paths" "$DIRECTORY_TEMP/new.paths" > "$DIRECTORY_TEMP/stale"
 count_stale=$(wc -l < "$DIRECTORY_TEMP/stale" | tr -d ' ')
+count_pruned=0
 while read -r rel; do
     [ -n "$rel" ] || continue
-    echo "rules-vendor: stale    $rel (locked before, absent from v$version; delete it or record a deviation)" >&2
+    # A shared file that was renamed or dropped leaves a copy behind. Two copies
+    # of a rule set disagree the moment either is edited, and the validator
+    # reports the leftover as a duplicate, so --prune removes it. It only ever
+    # removes a path this project's own lock named, never a local file.
+    if [ "$prune" -eq 1 ] && [ -f "$PROJECT_ROOT/$rel" ] && [ "$dry_run" -eq 0 ]; then
+        rm -f "$PROJECT_ROOT/$rel"
+        count_pruned=$((count_pruned + 1))
+        echo "rules-vendor: prune    $rel (no longer in v$version)"
+        continue
+    fi
+    echo "rules-vendor: stale    $rel (locked before, absent from v$version; delete it, or pass --prune)" >&2
 done < "$DIRECTORY_TEMP/stale"
 
 if [ "$dry_run" -eq 1 ]; then
-    echo "rules-vendor: dry run: would write v$version: $count_added add, $count_updated update, $count_unchanged unchanged, $count_stale stale"
+    echo "rules-vendor: dry run: would write v$version: $count_added add, $count_updated update, $count_unchanged unchanged, $count_stale stale, $count_pruned pruned"
     exit 0
 fi
 
@@ -194,5 +207,5 @@ fi
 } > "$DIRECTORY_TEMP/lock"
 mv "$DIRECTORY_TEMP/lock" "$FILE_LOCK"
 
-echo "rules-vendor: wrote v$version to $PROJECT_ROOT: $count_added add, $count_updated update, $count_unchanged unchanged, $count_stale stale"
+echo "rules-vendor: wrote v$version to $PROJECT_ROOT: $count_added add, $count_updated update, $count_unchanged unchanged, $count_stale stale, $count_pruned pruned"
 echo "rules-vendor: next: sh $PROJECT_ROOT/scripts/rules-check.sh $PROJECT_ROOT"

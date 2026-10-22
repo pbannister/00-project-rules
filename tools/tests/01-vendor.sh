@@ -44,5 +44,30 @@ output=$(sh "$RULES_ROOT/tools/rules-vendor.sh" "$DIRECTORY_TEST" 2>&1) \
 printf '%s\n' "$output" | grep -q '0 add, 0 update' \
     || fail "re-vendoring was not a no-op: $output"
 
+# 3. --prune removes a shared file the project's own lock named but the current
+#    version no longer carries. Without it, a rename leaves two copies of a rule
+#    set behind, which the validator reports as a duplicate.
+printf 'stale rule\n' > "$DIRECTORY_TEST/prompts/common/99-stale.md"
+stale_hash=$(printf 'stale rule\n' | sha256sum | cut -d' ' -f1)
+printf '%s  %s\n' "$stale_hash" "prompts/common/99-stale.md" >> "$DIRECTORY_TEST/rules.lock"
+output=$(sh "$RULES_ROOT/tools/rules-vendor.sh" "$DIRECTORY_TEST" --prune 2>&1) \
+    || fail "--prune failed: $output"
+[ ! -f "$DIRECTORY_TEST/prompts/common/99-stale.md" ] \
+    || fail '--prune did not remove the stale file'
+printf '%s\n' "$output" | grep -qF 'prune    prompts/common/99-stale.md' \
+    || fail "--prune did not report what it removed: $output"
+
+# 4. Without --prune the leftover is reported, never deleted: removing a file is
+#    a decision, and the tool makes it the caller's.
+printf 'stale rule\n' > "$DIRECTORY_TEST/prompts/common/98-stale.md"
+stale_hash=$(printf 'stale rule\n' | sha256sum | cut -d' ' -f1)
+printf '%s  %s\n' "$stale_hash" "prompts/common/98-stale.md" >> "$DIRECTORY_TEST/rules.lock"
+output=$(sh "$RULES_ROOT/tools/rules-vendor.sh" "$DIRECTORY_TEST" 2>&1) \
+    || fail 'vendoring with a stale file failed'
+[ -f "$DIRECTORY_TEST/prompts/common/98-stale.md" ] \
+    || fail 'a leftover was deleted without --prune'
+printf '%s\n' "$output" | grep -qF 'stale    prompts/common/98-stale.md' \
+    || fail "the leftover was not reported: $output"
+
 echo '01-vendor: ok'
 exit 0

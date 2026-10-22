@@ -38,6 +38,12 @@ mkdir -p "$DIRECTORY_ROOT"
 cp -R "$SKELETON/." "$DIRECTORY_ROOT/"
 rm -rf "$DIRECTORY_ROOT/.git"
 
+# The skeleton may be one version behind, and a rename leaves a stale copy of a
+# shared file behind. Vendor the current version with --prune so the fixture is a
+# coherent project rather than a mix of two versions.
+sh "$RULES_ROOT/tools/rules-vendor.sh" "$DIRECTORY_ROOT" --force --prune >/dev/null 2>&1 \
+    || { echo "05-declaration: could not vendor into the fixture" >&2; exit 1; }
+
 # The project's own state: a licence, a dependency manifest, and a research tree.
 printf 'MIT\n' > "$DIRECTORY_ROOT/LICENSE"
 printf '[project]\nname = "canary"\n' > "$DIRECTORY_ROOT/pyproject.toml"

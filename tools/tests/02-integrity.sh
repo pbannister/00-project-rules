@@ -46,8 +46,8 @@ expect_failure 'edited vendored file' 'modified: prompts/03-conventions.md' \
     sh "$DIRECTORY_A/scripts/rules-check.sh" "$DIRECTORY_A"
 
 # 2. A deleted vendored file is reported as missing, not as a crash.
-rm "$DIRECTORY_B/prompts/common/02-universal-rules.md"
-expect_failure 'deleted vendored file' 'missing: prompts/common/02-universal-rules.md' \
+rm "$DIRECTORY_B/prompts/common/01-universal-rules.md"
+expect_failure 'deleted vendored file' 'missing: prompts/common/01-universal-rules.md' \
     sh "$DIRECTORY_B/scripts/rules-check.sh" "$DIRECTORY_B"
 
 # 3. A project with no lock is refused outright.

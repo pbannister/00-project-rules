@@ -11,7 +11,7 @@
 # the task may be handed to the agent under test; handing the rest measures
 # whether the agent can read its own answer key.
 #
-# Two traps this closes, both found by trying to extract a task by hand:
+# Three traps this closes, all found by trying to run a case by hand:
 #
 #   1. The task is wrapped in a fenced block that itself opens with
 #      "## TASK-DESCRIPTION". Taking "the text up to the next ## heading" stops
@@ -19,6 +19,10 @@
 #   2. Prose after the closing fence belongs to the case, not the task. In one
 #      case it states which test the task contradicts -- exactly the thing the
 #      agent must not be told.
+#   3. A case can depend on files the project does not have. Every case declares
+#      its prerequisites in `## Requires`, and this tool refuses a case whose
+#      prerequisites are absent. A run against a missing prop is not a failure:
+#      it is not a run.
 #
 # So: the fenced block is the task, and anything outside it in the same section
 # is a note to the operator. --note prints that note to standard error, clearly
@@ -58,6 +62,7 @@ command -v python3 >/dev/null 2>&1 || {
 }
 
 python3 - "$file_case" "$show_note" <<'PY'
+import os
 import re
 import sys
 
@@ -65,21 +70,52 @@ path, show_note = sys.argv[1], sys.argv[2] == "1"
 HEADING = "## Task given to the agent"
 
 lines = open(path, encoding="utf-8").read().splitlines()
-start = next((i for i, line in enumerate(lines) if line.strip() == HEADING), None)
-if start is None:
-    print(f"rules-eval-task: {path} has no '{HEADING}' section", file=sys.stderr)
+
+
+def section(name):
+    """The body of a level-two section, ending at the next heading outside a fence."""
+    start = next((i for i, line in enumerate(lines) if line.strip() == name), None)
+    if start is None:
+        return None
+    collected, in_fence = [], False
+    for line in lines[start + 1:]:
+        if line.lstrip().startswith("```"):
+            in_fence = not in_fence
+            collected.append(line)
+            continue
+        if not in_fence and re.match(r"^## ", line):
+            break
+        collected.append(line)
+    return collected
+
+
+# The project root is the parent of the directory holding the case, when that
+# directory is `evals`; otherwise the caller's working directory.
+directory_case = os.path.dirname(os.path.abspath(path))
+project_root = (os.path.dirname(directory_case)
+                if os.path.basename(directory_case) == "evals" else os.getcwd())
+
+body_requires = section("## Requires")
+required = []
+if body_requires is not None:
+    required = [token.strip().rstrip("/")
+                for token in re.findall(r"`([^`]+)`", "\n".join(body_requires))]
+    if required and required[0].lower().startswith("nothing"):
+        required = []
+missing = [item for item in required
+           if not os.path.exists(os.path.join(project_root, item))]
+if missing:
+    print(f"rules-eval-task: {path} cannot be run here", file=sys.stderr)
+    for item in missing:
+        print(f"rules-eval-task:   the project does not carry {item}", file=sys.stderr)
+    print("rules-eval-task: a missing prerequisite is not a failure; the case does not "
+          "apply to this project", file=sys.stderr)
     sys.exit(2)
 
-# The section ends at the next level-two heading that is not inside a fence.
-body, in_fence = [], False
-for line in lines[start + 1:]:
-    if line.lstrip().startswith("```"):
-        in_fence = not in_fence
-        body.append(line)
-        continue
-    if not in_fence and re.match(r"^## ", line):
-        break
-    body.append(line)
+body = section(HEADING)
+if body is None:
+    print(f"rules-eval-task: {path} has no '{HEADING}' section", file=sys.stderr)
+    sys.exit(2)
 
 task, note, in_task = [], [], False
 saw_fence = False

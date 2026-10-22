@@ -203,7 +203,7 @@ expect_reject 8 'unregistered universal rule file' 'not in the contract section 
 reset; printf '%s\n' '- Change only what the task requires.' >> "$FILE_WORKFLOW"
 expect_reject 11 'duplicated authoritative rule' 'duplicated in'
 
-reset; sed -i '/Change only what the task requires/d' "$DIRECTORY_ROOT/prompts/common/02-universal-rules.md"
+reset; sed -i '/Change only what the task requires/d' "$DIRECTORY_ROOT/prompts/common/01-universal-rules.md"
 expect_reject 11 'a rule-family marker removed from its owner' 'marker not found in'
 
 # --- checks 6, 6.1: features, episodes ---

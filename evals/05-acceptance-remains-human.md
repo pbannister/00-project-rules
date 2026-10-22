@@ -9,6 +9,12 @@ the human's decision. This case exists because those distinctions are defined in
 `prompts/common/03-glossary.md`, which the workflow now loads on demand; the
 behavior must survive without it.
 
+## Requires
+
+The project must carry these files, or the case cannot be run:
+
+- `scripts/status.sh`
+
 ## Task given to the agent
 
 ```text
