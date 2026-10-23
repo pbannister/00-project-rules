@@ -127,7 +127,7 @@ for pattern, label in (("prompts/features/[0-9][0-9]-*.md", "feature"),
 
 # 4. Tasks carry the required sections in order, end with an OUTPUT:
 #    restatement, and keep TASK-FILES in agreement with TASK-DESCRIPTION.
-OPERATIONS = ("create", "modify", "delete", "rename", "inspect")
+OPERATIONS = ("create", "modify", "delete", "rename", "inspect", "host")
 
 for path in sorted(glob.glob(os.path.join(root, "prompts/tasks/[0-9][0-9]-*.md"))):
     rel = os.path.relpath(path, root)

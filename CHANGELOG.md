@@ -10,6 +10,19 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-23.1] - 2026-10-23
+
+Impact: additive — a task may declare a host operation; nothing existing changes.
+
+### Added
+
+- `TASK-FILES` accepts a `host` operation, and `TASK-DESCRIPTION` an
+  `- Host: `host[:resource]`` line, for a task that changes live host state and no
+  repository file. `prompts/02-workflow.md` §7.1 already anticipated such a task
+  ("skip this step when the task changed no files"), but the task schema had no
+  way to declare one: check 4 demanded a repository row and an operation line, so
+  the honest task either failed or had to invent an edit.
+
 ## [2026-10-22.16] - 2026-10-22
 
 Impact: breaking — an eval case now authorizes a second file, so what its task
