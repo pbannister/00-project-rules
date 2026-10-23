@@ -10,6 +10,20 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-10-23.2] - 2026-10-23
+
+Impact: additive — completes the `host` operation that `2026-10-23.1` introduced.
+
+### Fixed
+
+- `2026-10-23.1` added `host` to the `TASK-FILES` operation list but not to the
+  pattern that reads `- <Verb>: `path`` lines from `TASK-DESCRIPTION`, so a task
+  declaring a host operation failed with "TASK-DESCRIPTION has no operation line"
+  — the feature was announced and did not work.
+- The corpus had no fixture for it, which is why nothing failed: the coverage check
+  requires a fixture per numbered check, not per accepted operation. There is now
+  an acceptance case that declares a host operation and no repository file.
+
 ## [2026-10-23.1] - 2026-10-23
 
 Impact: additive — a task may declare a host operation; nothing existing changes.
