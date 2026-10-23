@@ -194,3 +194,7 @@ projects that were copied earlier are not automatically brought up to date — e
 one is a separate upgrade, recorded, because the differences between the 8
 variants are real (the oldest copies are missing the safety-precedence level and
 the workflow-authorization wording entirely). See `releases/v2026-10-22.1.md`.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

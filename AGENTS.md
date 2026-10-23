@@ -16,6 +16,12 @@ hold a project's local layer (glossary, feature and task indexes, `README.md`,
   vendors. A file in `prompts/`, `evals/`, or `tests/` that is not here is a
   defect; `tools/tests/00-manifest.sh` fails on one.
 - `CHANGELOG.md` — why the current version differs from the last.
+- `prompts/01-contract.md` — authority, precedence, and the file-system rules
+  these shared rules impose.
+- `prompts/02-workflow.md` — the execution sequence those rules define.
+- `prompts/03-conventions.md` — the formatting, naming, and structure the
+  shared rules impose, applied to this repository too.
+- `prompts/how-to-write-tasks.md` — the task format those rules define.
 
 ## The Invariants
 

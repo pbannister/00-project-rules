@@ -34,11 +34,15 @@ duplicates=$(sort "$RULES_ROOT/MANIFEST" | uniq -d)
 
 # 3. Every file in the shared tree is listed. records/ is exempt: it may hold
 #    this repository's own records, and only records/README.md is shared.
+#    prompts/1x-*.md is exempt too: a file numbered after the shared ones is
+#    project-local by definition, the place a project states what it has, so it
+#    must never be vendored into another project.
 for directory in prompts evals tests; do
     find "$RULES_ROOT/$directory" -type f \
         | sed "s#^$RULES_ROOT/##" | sort > "/tmp/00-manifest.$$.found"
     while read -r rel; do
         [ -n "$rel" ] || continue
+        case "$rel" in prompts/1[0-9]-*.md) continue ;; esac
         grep -qxF -- "$rel" "$RULES_ROOT/MANIFEST" \
             || fail "file in the shared tree is not in MANIFEST: $rel"
     done < "/tmp/00-manifest.$$.found"
