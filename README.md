@@ -129,7 +129,8 @@ where the first canary attempt stopped.
 
 ## Versioning
 
-`v<date>.<counter>`: `v2026-10-22.1`. `date` is `YYYY-MM-DD`; `counter` starts at
+`v<date>.<counter>`: `v2026-10-22.1`. `date` is the local `YYYY-MM-DD` — the day
+the release is cut where it is cut, not UTC — and `counter` starts at
 1 each day and is one past the highest tag already cut for that date. `VERSION`
 holds the version without the leading `v`, and `make next` prints the next free
 one.

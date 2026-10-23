@@ -202,7 +202,7 @@ fi
     echo '# Upgrade through a task that records the change under records/.'
     echo "version = $version"
     echo "source = 00-project-rules"
-    echo "vendored = $(date -u +%Y-%m-%d)"
+    echo "vendored = $(date +%Y-%m-%d)"
     cat "$DIRECTORY_TEMP/new"
 } > "$DIRECTORY_TEMP/lock"
 mv "$DIRECTORY_TEMP/lock" "$FILE_LOCK"

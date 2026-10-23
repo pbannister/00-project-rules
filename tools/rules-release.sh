@@ -57,13 +57,17 @@ version=$(tr -d '[:space:]' < "$RULES_ROOT/VERSION")
 
 # A version is <date>.<counter>: YYYY-MM-DD, a dot, and a counter that starts
 # at 1 each day. VERSION holds it without the leading "v"; the tag adds the "v".
+#
+# The date is the local date, not UTC. A release cut at 18:40 Pacific is dated
+# 18:40 Pacific's day: the version should say when the work happened to the person
+# who cut it, and "one release a day" is their day, not Greenwich's.
 case "$version" in
     *[!0-9.-]*) fail "VERSION is not <date>.<counter> (YYYY-MM-DD.N): $version" ;;
 esac
 printf '%s\n' "$version" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}\.[1-9][0-9]*$' \
     || fail "VERSION is not <date>.<counter> (YYYY-MM-DD.N): $version"
 date_part=${version%.*}
-today=$(date -u +%Y-%m-%d)
+today=$(date +%Y-%m-%d)
 
 cd "$RULES_ROOT"
 

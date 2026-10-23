@@ -30,7 +30,8 @@ hold a project's local layer (glossary, feature and task indexes, `README.md`,
   which one a version moved.
 - **A release is a tag.** A project pins a tag, so a version that was never
   tagged cannot be adopted.
-- **A version is `<date>.<counter>`.** `VERSION` holds `2026-10-22.1`; the tag
+- **A version is `<date>.<counter>`.** The date is local, not UTC. `VERSION` holds
+  `2026-10-22.1`; the tag
   adds the `v`, and the counter is one past the highest tag for that date.
   `make next` prints the next free one.
 - **A tag here is deliberately not a project's tag.** A project releases an
