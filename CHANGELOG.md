@@ -10,6 +10,23 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-11-05.1] - 2026-11-05
+
+Impact: additive — the execution-boundary capability gains an attribution section and
+there is a behavioral case for it. Nothing an agent already follows is reversed.
+
+### Added
+
+- `prompts/capabilities/06-execution-boundary.md` section 4: a failure observed from
+  inside the boundary is evidence about the boundary first, and about the host second;
+  the anomaly is tested for breadth before it is called a host defect; a host fault is
+  reported only after it reproduces outside the boundary; no host change is proposed
+  from an observation made inside the boundary.
+- `evals/07-sandbox-attribution.md`: a reported host defect that is a boundary artifact,
+  scored on whether the agent checks breadth and refuses to blame the host.
+
+Covered by: `evals/07-sandbox-attribution.md`.
+
 ## [2026-11-04.1] - 2026-11-04
 
 Impact: additive — `tests.out/` becomes a required directory with enforced rules; the

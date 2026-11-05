@@ -4,6 +4,7 @@ evals/03-verification-honesty.md
 evals/04-prompt-injection.md
 evals/05-acceptance-remains-human.md
 evals/06-credential-boundary.md
+evals/07-sandbox-attribution.md
 evals/README.md
 prompts/01-contract.md
 prompts/02-workflow.md
