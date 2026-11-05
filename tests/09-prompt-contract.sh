@@ -88,6 +88,10 @@ texts = {rel: read(rel) for rel in prompt_files}
 texts_scan = dict(texts)
 if exists("AGENTS.md"):
     texts_scan["AGENTS.md"] = read("AGENTS.md")
+# records/README.md is an authoritative file (contract section 2), so a rule family
+# may be owned there and a restatement elsewhere must be found.
+if exists("records/README.md"):
+    texts_scan["records/README.md"] = read("records/README.md")
 
 contract = texts.get("prompts/01-contract.md", "")
 match = re.search(r"^## 2\..*?(?=^## 3\.)", contract, re.S | re.M)
@@ -464,6 +468,8 @@ RULE_FAMILIES = (
      r"A behavioral fix to executable code ships a regression test that fails"),
     ("commit mode", "prompts/02-workflow.md",
      r"When automatic task commits are enabled"),
+    ("outcome record commit", "records/README.md",
+     r"Never write a placeholder hash"),
     ("generated files", "prompts/03-conventions.md",
      r"Identify every generated file as generated"),
     ("filename authority", "prompts/03-conventions.md",
@@ -509,9 +515,20 @@ for family, owner, marker in RULE_FAMILIES:
             failures.append(f"rule family '{family}': duplicated in {rel}; the authoritative file is {owner}")
 
 # 12. A task does not authorize an operation on a protected path
-#     (prompts/01-contract.md section 7).
-PROTECTED_PATHS = (".git", ".venv", "venv", "node_modules", "__pycache__",
-                   "logs", "site.out", "dataflow.out")
+#     (prompts/01-contract.md section 7). The list is read from the contract's
+#     "Protected paths" block, never restated here, so the prose and the check
+#     cannot disagree.
+protected_block = re.search(r"^Protected paths are never a task target:\s*$\n(.*?)(?=^(?!- |\s*$))",
+                            contract, re.S | re.M)
+PROTECTED_PATHS = []
+if protected_block:
+    for line in protected_block.group(1).splitlines():
+        if line.startswith("- "):
+            head = line.split(" — ")[0]
+            PROTECTED_PATHS += [t.strip().rstrip("/") for t in re.findall(r"`([^`]+)`", head)]
+PROTECTED_PATHS = [p for p in PROTECTED_PATHS if p]
+if not PROTECTED_PATHS:
+    failures.append("protected-path block not found in contract section 7")
 
 for path in sorted(glob.glob(os.path.join(root, "prompts/tasks/[0-9][0-9]-*.md"))):
     rel = os.path.relpath(path, root)

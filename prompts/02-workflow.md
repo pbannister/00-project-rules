@@ -54,8 +54,8 @@ Also:
 
 ## 3. Plan the Work
 
-- Plan before implementation, as a working aid: identify the applicable requirements, target files, required validation, and output order.
-- Keep the plan out of the response unless the requested output format includes it.
+- Plan before implementation: identify the applicable requirements, target files, required validation, and output order.
+- The plan's place in the response is governed by `prompts/01-contract.md` section 4.
 
 ## 3.1 Isolate Concurrent Work
 
@@ -103,7 +103,7 @@ Rules:
 - Keep tests that change live state outside `make test`.
 - Keep spec-derived sample inputs in `dataflow.in/` and use them as fixtures.
 - A behavioral fix to executable code ships a regression test that fails against the pre-fix implementation; a fix with no applicable test mechanism is exempt.
-- Verification is independent of construction: do not use the builder's own helpers as the oracle.
+- SHOULD: verification is independent of construction. A test does not use the code under test, or a helper from the same module, to compute its expected result. No check enforces this; a reviewer confirms it.
 
 ## 5. Implement the Requested Scope
 
@@ -150,7 +150,7 @@ When automatic task commits are disabled, or the task says the human owns commit
 - Leave the changes in the working tree.
 - Report that verification succeeded and no commit was created.
 
-An outcome record is written after the episode settles and the human reviews it; `records/README.md` owns the record rules, including the separate commit and the prohibition on a placeholder hash.
+Outcome records follow `records/README.md`.
 
 ## 7.2 Definition of Done
 

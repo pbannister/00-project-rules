@@ -10,6 +10,47 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-11-04.1] - 2026-11-04
+
+Impact: additive — `tests.out/` becomes a required directory with enforced rules; the
+validator gains a protected path and a rule family. Nothing an agent already follows is
+reversed.
+
+### Added
+
+- `tests.out/` is a required directory, for working files written by tests (not
+  version-controlled). A test writes only under `tests.out/<test-name>/`, clears that
+  subdirectory before it runs, and removes it only after it passes.
+- `tests.out/` is a protected path: a task may not authorize an operation on it.
+  The protected-path list is read from the contract, not restated in the validator.
+- Rule-family check: the outcome-record commit rule has one owner,
+  `records/README.md`, and is refused elsewhere.
+- Rule strength: MUST marks an enforced rule and SHOULD marks an unenforced one; a rule
+  with neither is MUST.
+
+### Changed
+
+- `prompts/01-contract.md` section 7 lists every required directory once, with its
+  purpose, behind a marker comment that tooling reads.
+- `prompts/03-conventions.md` section 2 points at section 7 instead of repeating the list.
+- `prompts/01-contract.md` section 8 names dispatched task files as an instruction source.
+- `prompts/02-workflow.md` section 3 defers response form to the contract.
+- `prompts/02-workflow.md` section 7.1 outcome-record line points at `records/README.md`.
+- `prompts/01-contract.md` section 7 states the `rules.lock` exception explicitly.
+- `prompts/02-workflow.md` section 4.2 verification independence is a SHOULD.
+- `records/README.md` is scanned by the validator, as an authoritative file.
+
+### Fixed
+
+- `tools/tests/05-declaration.sh` asserted that an undeclared `LICENSE` was refused.
+  The skeleton declares `LICENSE`, so the assertion could never hold; it now checks an
+  undeclared `pyproject.toml`.
+
+Covered by: `tests/10-prompt-validator.sh` (new protected-path case for `tests.out/`,
+and a mutation check showing it is load-bearing), `tests/09-prompt-contract.sh`
+(rule family and scan scope), and `tools/tests/05-declaration.sh`.
+Behavioral evidence: not run; the eval cases are unchanged.
+
 ## [2026-10-23.2] - 2026-10-23
 
 Impact: additive — completes the `host` operation that `2026-10-23.1` introduced.

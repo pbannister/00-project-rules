@@ -57,13 +57,10 @@ git -C "$DIRECTORY_ROOT" add -A
 if output=$(sh "$RULES_ROOT/tests/09-prompt-contract.sh" "$DIRECTORY_ROOT" 2>&1); then
     fail 'an undeclared root file and directory were accepted'
 fi
-printf '%s\n' "$output" | grep -qF 'root file is not permitted by contract section 7: LICENSE' \
+printf '%s\n' "$output" | grep -qF 'root file is not permitted by contract section 7: pyproject.toml' \
     || fail "the undeclared root file was not refused: $output"
 printf '%s\n' "$output" | grep -qF 'top-level directory is not permitted by contract section 7: research/' \
     || fail "the undeclared directory was not refused: $output"
-printf '%s\n' "$output" | grep -qF 'root file is not permitted by contract section 7: pyproject.toml' \
-    || fail "the second undeclared root file was not refused: $output"
-
 # 2. Declared in a local rule file numbered after the shared ones, they pass.
 cat > "$DIRECTORY_ROOT/prompts/10-project.md" <<'EOF'
 # Project Structure
