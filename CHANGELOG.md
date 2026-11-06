@@ -10,6 +10,22 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-11-06.1] - 2026-11-06
+
+Impact: breaking — `prompts/capabilities/` splits into `capabilities/artifacts/`
+(`01`–`05`) and `capabilities/execution/` (`06`–`09`). A project that pins this version
+must re-vendor, and a task that referenced an old capability path must update it.
+
+### Changed
+
+- The nine capability files move under the two subdirectories; `MANIFEST`, the contract
+  authority table, the workflow loader line, the conventions Applicability list and its
+  pinned-dependency reference, the prompts README canonical list, `evals/06-credential-boundary.md`,
+  and `tests/09-prompt-contract.sh` all name the new paths.
+
+Covered by: `tests/09-prompt-contract.sh` (registry and applicability) and
+`tools/tests/04-skeleton-integration.sh` (vendoring end-to-end).
+
 ## [2026-11-05.1] - 2026-11-05
 
 Impact: additive — the execution-boundary capability gains an attribution section and

@@ -31,9 +31,9 @@ these directories.
 | Governance: rule, precedence, override, feature, requirement | `01-contract.md`, `features/`, `how-to-write-features.md` |
 | Work: task, operation, path, plan, acceptance, verification | `01-contract.md`, `02-workflow.md`, `how-to-write-tasks.md` |
 | Episodes: episode, phase | `episodes/`, `how-to-write-episodes.md` |
-| Records and release: record, incident, commit, branch, tag, version, release, changelog, lock | `02-workflow.md`, `capabilities/02-version-information.md`, `capabilities/04-release-and-publishing.md`, `records/README.md` |
-| Artifacts and pipeline: document, stage, work_product, dataset, provenance | `capabilities/01-generated-documentation.md`, `capabilities/03-generated-data-products.md`, `capabilities/05-pinned-dependencies.md` |
-| Execution: agent, sandbox, boundary, credential, session, goal, delegation, failure, layer | `capabilities/06-execution-boundary.md` through `09-failure-attribution.md` |
+| Records and release: record, incident, commit, branch, tag, version, release, changelog, lock | `02-workflow.md`, `capabilities/artifacts/02-version-information.md`, `capabilities/artifacts/04-release-and-publishing.md`, `records/README.md` |
+| Artifacts and pipeline: document, stage, work_product, dataset, provenance | `capabilities/artifacts/01-generated-documentation.md`, `capabilities/artifacts/03-generated-data-products.md`, `capabilities/artifacts/05-pinned-dependencies.md` |
+| Execution: agent, sandbox, boundary, credential, session, goal, delegation, failure, layer | `capabilities/execution/06-execution-boundary.md` through `execution/09-failure-attribution.md` |
 | Paths and pages: path, directory, page, page_set, nav, dashboard | `03-conventions.md`, `flavors/01-semantic-sort-naming.md`, `features/02-project-pages.md` |
 | Discourse: ambiguity, assumption, delta, untrusted content, privacy, risk | `common/01-universal-rules.md`, `01-contract.md` |
 | No object: glossary, orientation | `common/03-glossary.md`, `README.md` |
@@ -51,11 +51,11 @@ these directories.
 - The navigation benefit is delivered by an object-first index (this document),
   which is additive.
 
-## The one split the model does suggest
+## The one split, done
 
-Status: deferred 2026-11-06. Tracked in `00-project-skeleton/TODO.md`.
+Status: done in `2026-11-06.1` (breaking).
 
-`capabilities/` mixes two families:
+`capabilities/` mixed two families:
 
 - artifacts and pipeline: `01` generated documentation, `02` version, `03` data
   products, `04` release, `05` pinned dependencies;
@@ -69,9 +69,7 @@ release.
 
 ## Recommendation
 
-1. Keep the current directories.
+1. Keep the current directories; the split above is the one exception, now made.
 2. Keep this index current as files and objects change.
-3. Split `capabilities/` only when a major version is already being cut for
-   another reason; the readability gain does not pay for the migration alone.
-4. Do not move the glossary: it is descriptive, but the workflow loads it as a
+3. Do not move the glossary: it is descriptive, but the workflow loads it as a
    reference, and `prompts/` is where the loader looks.

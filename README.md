@@ -136,7 +136,7 @@ holds the version without the leading `v`, and `make next` prints the next free
 one.
 
 This tag shape is **deliberately unlike a project's**. A project's release tag is
-`v<date>-<branch>` (`prompts/capabilities/04-release-and-publishing.md`), because
+`v<date>-<branch>` (`prompts/capabilities/artifacts/04-release-and-publishing.md`), because
 a project releases an artifact *from a branch*. This repository has no branches
 and never releases from one, so a branch cannot appear in its tags. The dot
 before the counter is the visible difference, and it is what tells you at a

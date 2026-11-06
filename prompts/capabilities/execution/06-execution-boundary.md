@@ -24,7 +24,7 @@ Instruction-layer injection resistance is `prompts/01-contract.md` section 8; th
 - A task that needs a credential declares where the credential lives and which pattern carries it.
 - A credential never enters the working tree, a prompt file, a task file, a record, a log, or output.
 - Narrow scope on a credential is not a substitute for unreachability; a token that a smarter model cannot misuse is an assumption, not a boundary.
-- A credential does not cross a delegation boundary (`prompts/capabilities/08-delegation-authority.md`).
+- A credential does not cross a delegation boundary (`prompts/capabilities/execution/08-delegation-authority.md`).
 
 ## 3. Declare the boundary
 
