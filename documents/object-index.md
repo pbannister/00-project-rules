@@ -53,6 +53,8 @@ these directories.
 
 ## The one split the model does suggest
 
+Status: deferred 2026-11-06. Tracked in `00-project-skeleton/TODO.md`.
+
 `capabilities/` mixes two families:
 
 - artifacts and pipeline: `01` generated documentation, `02` version, `03` data
