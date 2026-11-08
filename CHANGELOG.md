@@ -10,6 +10,22 @@ branches. A date and a counter say *when*, not *how much*, so every entry states
 its **impact**, and every entry that is not wording or internal names the test or
 eval that covers it. The impact classes are in `README.md`.
 
+## [2026-11-08.1] - 2026-11-08
+
+Impact: additive — a new `SHOULD` rule caps multi-line prose at a readable measure.
+Nothing an agent already follows is reversed.
+
+### Added
+
+- `prompts/03-conventions.md` section 1.2: cap a column of multi-line prose at a
+  readable measure (about 45 to 75 characters, 66 at the ideal), apply the cap to
+  prose-like text rather than code, treat it as a maximum, and express it in `ch`.
+- `evals/08-prose-measure.md`: a behavioral case for a wide status page whose prose
+  columns must stay readable.
+
+Covered by: `evals/08-prose-measure.md` (behavioral; run by hand and recorded in the
+release record before a tag).
+
 ## [2026-11-06.1] - 2026-11-06
 
 Impact: breaking — `prompts/capabilities/` splits into `capabilities/artifacts/`

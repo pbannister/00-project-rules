@@ -45,6 +45,13 @@ These conventions define formatting, naming, and repository structure.
 - When the variable is the lesser value, keep it on the left: write `a < 5`, never `5 > a`.
 - Use `<=` and `>=` only when the strict form is wrong; apply the same lesser-on-the-left order.
 
+## 1.2 Prose Measure
+
+- SHOULD: cap a column of multi-line prose at a readable measure — about 45 to 75 characters, 66 at the ideal — so the eye does not lose the line when it returns from the end of one line to the start of the next.
+- SHOULD: apply the cap to rendered prose and prose-like text — a paragraph, a table cell, a text box — and leave code and data to scroll instead.
+- SHOULD: treat the measure as a maximum, not a fixed width: a narrow window keeps its available width, and a wide window stops widening the text.
+- SHOULD: express the measure in characters (`ch`) in a stylesheet, because the guidance states the measure as a character count.
+
 ## 2. Directory Naming
 
 The required directories, their purposes, and the placement rule are listed once, in `prompts/01-contract.md` section 7. This section adds no directory of its own.
