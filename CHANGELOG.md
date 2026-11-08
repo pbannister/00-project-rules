@@ -12,8 +12,9 @@ eval that covers it. The impact classes are in `README.md`.
 
 ## [2026-11-08.1] - 2026-11-08
 
-Impact: additive — a new `SHOULD` rule caps multi-line prose at a readable measure.
-Nothing an agent already follows is reversed.
+Impact: additive — a new `SHOULD` rule caps multi-line prose at a readable measure,
+and the formal-rules cycle is a new feature. Nothing an agent already follows is
+reversed.
 
 ### Added
 
@@ -22,9 +23,14 @@ Nothing an agent already follows is reversed.
   prose-like text rather than code, treat it as a maximum, and express it in `ch`.
 - `evals/08-prose-measure.md`: a behavioral case for a wide status page whose prose
   columns must stay readable.
+- `prompts/features/03-formal-rules-cycle.md`: the cycle that turns prose into an
+  approved object model, formal rules, and reduced prose, and uses them later.
+- `evals/09-formal-rules-cycle.md`: a behavioral case for proposing the object
+  terms before writing a rule.
 
-Covered by: `evals/08-prose-measure.md` (behavioral; run by hand and recorded in the
-release record before a tag).
+Covered by: `evals/08-prose-measure.md` and `evals/09-formal-rules-cycle.md`
+(behavioral; run by hand and recorded in the release record before a tag), and
+`tests/09-prompt-contract.sh` (feature structure).
 
 ## [2026-11-06.1] - 2026-11-06
 

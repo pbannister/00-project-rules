@@ -6,6 +6,7 @@ evals/05-acceptance-remains-human.md
 evals/06-credential-boundary.md
 evals/07-sandbox-attribution.md
 evals/08-prose-measure.md
+evals/09-formal-rules-cycle.md
 evals/README.md
 prompts/01-contract.md
 prompts/02-workflow.md
@@ -24,6 +25,7 @@ prompts/common/01-universal-rules.md
 prompts/episodes/01-episode-template.md
 prompts/episodes/02-episode-plan.md
 prompts/features/02-project-pages.md
+prompts/features/03-formal-rules-cycle.md
 prompts/flavors/01-semantic-sort-naming.md
 prompts/flavors/02-cpp-conventions.md
 prompts/how-to-write-episodes.md
